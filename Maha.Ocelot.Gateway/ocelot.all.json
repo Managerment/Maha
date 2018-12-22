@@ -1,12 +1,16 @@
 ﻿{
   "ReRoutes": [ //处理上游请求的对象（下游指服务提供者，即服务程序。上游服务消费者，即用户或服务调用）
     {
-      "DownstreamPathTemplate": "/api/{everything}", //下游路由模板
+      "DownstreamPathTemplate": "/api/{everything}", //下游路由请求的模板
       "DownstreamScheme": "http", //下游路由请求的方式
-      "DownstreamHostAndPorts": [ //下游路由的Host以及端口
+      "DownstreamHostAndPorts": [ //下游路由的Host以及端口。用于定义将请求转发到的任何下游服务的主机和端口。通常这只包含一个条目，但有时希望对下游请求服务进行负载均衡，这个时候你就可以添加多个条目，并配合负载均衡选项进行相关的负载均衡设置
         {
           "Host": "localhost",
-          "Port": 51876
+          "Port": 8082
+        },
+        {
+          "Host": "localhost",
+          "Port": 8083
         }
       ],
       //以占位符的方式捕获所有路由，占位符{url}任何名称均可
@@ -18,45 +22,81 @@
       //		"Port": 1001,
       //	}
       //],
-      "UpstreamPathTemplate": "/{everything}", //上游路由请求的模板
+
+      //动态路由，允许指定一个查询字符串作为DownstreamPathTemplate的一部分。使用上游路径模板中{unitId}的值，并将其作为名为unitId的查询字符串参数添加到下游请求中
+      //"DownstreamPathTemplate": "/api/subscriptions/{subscriptionId}/updates?unitId={unitId}",
+      //"UpstreamPathTemplate": "/api/units/{subscriptionId}/{unitId}/updates",
+
+      //允许将查询字符串参数放在UpstreamPathTemplate中，以便可以将某些查询与某些服务匹配
+      //"DownstreamPathTemplate": "/api/units/{subscriptionId}/{unitId}/updates",
+      //"UpstreamPathTemplate": "/api/subscriptions/{subscriptionId}/updates?unitId={unitId}",
+
+      "UpstreamPathTemplate": "/{everything}", //上游路由请求的模板。用于标识要用于给定请求的DownstreamPathTemplate对应的URL。使用UpstreamHttpMethod以便Ocelot可以区分具有不同HTTP谓词的请求到相同的URL
       "UpstreamHttpMethod": [ //上游路由请求的方式
         "Get",
         "Post"
       ],
       "AddHeadersToRequest": {},
+      "UpstreamHeaderTransform": {},
+      "DownstreamHeaderTransform": {},
       "AddClaimsToRequest": {},
       "RouteClaimsRequirement": {},
       "AddQueriesToRequest": {},
-      "RequestIdKey": "",
+      "RequestIdKey": null,
       "FileCacheOptions": {
         "TtlSeconds": 0,
-        "Region": ""
+        "Region": null
       },
       "ReRouteIsCaseSensitive": false, //路径+查询字符串统统转发到下游路由，默认的ReRouting的配置是不区分大小写的，开启则意味着Ocelot将尝试将传入的上游URL与上游模板匹配时，区分大小写
-      "ServiceName": "",
+      "ServiceName": null,
       "QoSOptions": { //Qos相关配置
         "ExceptionsAllowedBeforeBreaking": 0,
         "DurationOfBreak": 0,
         "TimeoutValue": 0
       },
-      "LoadBalancer": "", //负载均衡相关选项
+      "LoadBalancerOptions": { //负载均衡相关选项
+        //LeastConnection : 将请求发往最空闲的那个服务器
+        //RoundRobin ：轮流发送
+        //NoLoadBalance ：不启用负载均衡，总是发往第一个请求或者服务发现的那个服务器
+        "Type": "RoundRobin",
+        "Key": null,
+        "Expiry": 0
+      },
+      //"LoadBalancer": "", //负载均衡相关选项
       "RateLimitOptions": { //限流相关配置
         "ClientWhitelist": [],
         "EnableRateLimiting": false,
-        "Period": "",
-        "PeriodTimespan": 0,
+        "Period": null,
+        "PeriodTimespan": 0.0,
         "Limit": 0
       },
       "AuthenticationOptions": { //认证相关选项
-        "AuthenticationProviderKey": "",
+        "AuthenticationProviderKey": null,
         "AllowedScopes": []
       },
       "HttpHandlerOptions": { //HttpHandler相关的配置
-        "AllowAutoRedirect": true, //是否对下游重定向进行响应。请求是否应遵循重定向响应。如果请求应自动遵循来自下游资源的重定向响应，则将其设置为true; 否则是假的。默认值为false。
-        "UseCookieContainer": true, //是否启动CookieContainer储存cookies。处理程序是否使用CookieContainer属性存储服务器cookie并在发送请求时使用这些cookie。默认值为false。请注意，如果您使CookieContainer，则Ocelot会为每个下游服务缓存HttpClient。这意味着对该DownstreamService的所有请求将共享相同的cookie
-        "UseTracing": true
+        "AllowAutoRedirect": false, //是否对下游重定向进行响应。请求是否应遵循重定向响应。如果请求应自动遵循来自下游资源的重定向响应，则将其设置为true; 否则是假的。默认值为false。
+        "UseCookieContainer": false, //是否启动CookieContainer储存cookies。处理程序是否使用CookieContainer属性存储服务器cookie并在发送请求时使用这些cookie。默认值为false。请注意，如果您使CookieContainer，则Ocelot会为每个下游服务缓存HttpClient。这意味着对该DownstreamService的所有请求将共享相同的cookie
+        "UseTracing": false,
+        "UseProxy": true
       },
+      "UpstreamHost": null, //上游Host，仅当主机标头值为此值时，才会匹配上面的ReRoute
+      "Key": null,
+      "DelegatingHandlers": [],
+      "Priority": 1, //设置匹配上游HttpRequest的优先级顺序
+      "Timeout": 0,
       "DangerousAcceptAnyServerCertificateValidator": false //忽略SSL 警告/错误,最好的方式是创建本地以及远程所信任的证书
     }
-
+  ],
+  "GlobalConfiguration": {
+  },
+  "Aggregates": [ //聚合配置,多个正常的ReRoutes打包并映射到一个对象来对客户端的请求进行响应
+    {
+      "ReRouteKeys": [
+        "Good",
+        "Order"
+      ],
+      "UpstreamPathTemplate": "/GetOrderDetail/{id}"
+    }
+  ]
 }

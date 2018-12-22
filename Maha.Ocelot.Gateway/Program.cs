@@ -28,7 +28,8 @@ namespace Maha.Ocelot.Gateway
                                 //这里可以单独配置所有的规则文件,也通过ocelot AddOcelot自动匹配加载 (规则:(?i)ocelot.([a-zA-Z0-9]*).json)
                                 //Ocelot支持在配置文件发生改变的时候重新加载json配置文件
                                 .AddOcelot(hostingContext.HostingEnvironment)
-                                //.AddJsonFile("ocelot.json",optional:false,reloadOnChange:true)
+                                //.AddJsonFile("ocelot.json", optional: false, reloadOnChange: true)
+                                //.AddJsonFile("ocelot.all.json", optional: false, reloadOnChange: true)
                                 //.AddJsonFile("ocelot.good.json", optional: false, reloadOnChange: true)
                                 //.AddJsonFile("ocelot.order.json", optional: false, reloadOnChange: true)
                                 .AddEnvironmentVariables();

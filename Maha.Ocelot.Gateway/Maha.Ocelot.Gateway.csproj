@@ -13,7 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="ocelot.order.json" />
+    <None Include="ocelot.order.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -24,9 +26,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="ocelot.all.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ocelot.global.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
+    <Content Update="ocelot.good.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Content>
     <Content Update="ocelot.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+
+  <ProjectExtensions><VisualStudio><UserProperties ocelot_1all_1json__JSONSchema="http://json.schemastore.org/apple-app-site-association" /></VisualStudio></ProjectExtensions>
 
 </Project>
