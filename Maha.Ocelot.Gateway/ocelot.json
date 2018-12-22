@@ -1,7 +1,9 @@
 ﻿{
   "ReRoutes": [
     {
-      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamPathTemplate": "/api/{everything}", //下游路由模板
+      "UpstreamPathTemplate": "/{everything}", //上游路由模板
+      "UpstreamHttpMethod": [ "Get", "Post" ], //上游请求方法
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -13,8 +15,8 @@
           "Port": 8083
         }
       ],
-      "UpstreamPathTemplate": "/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post" ],
+
+
       "LoadBalancerOptions": {
         "Type": "RoundRobin"
       }

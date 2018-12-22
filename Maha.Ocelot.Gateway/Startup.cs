@@ -31,12 +31,12 @@ namespace Maha.Ocelot.Gateway
             {
                 app.UseDeveloperExceptionPage();
             }
-            //else
-            //{
-            //    app.UseHsts();
-            //}
+            else
+            {
+                app.UseHsts();
+            }
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseOcelot().Wait();//使用Ocelot中间件
             app.UseMvc();
         }
