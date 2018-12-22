@@ -1,0 +1,62 @@
+﻿{
+  "ReRoutes": [ //处理上游请求的对象（下游指服务提供者，即服务程序。上游服务消费者，即用户或服务调用）
+    {
+      "DownstreamPathTemplate": "/api/{everything}", //下游路由模板
+      "DownstreamScheme": "http", //下游路由请求的方式
+      "DownstreamHostAndPorts": [ //下游路由的Host以及端口
+        {
+          "Host": "localhost",
+          "Port": 51876
+        }
+      ],
+      //以占位符的方式捕获所有路由，占位符{url}任何名称均可
+      //"DownstreamPathTemplate": "/{url}",
+      //"DownstreamScheme": "http",
+      //"DownstreamHostAndPorts": [
+      //	{
+      //		"Host": "localhost",
+      //		"Port": 1001,
+      //	}
+      //],
+      "UpstreamPathTemplate": "/{everything}", //上游路由请求的模板
+      "UpstreamHttpMethod": [ //上游路由请求的方式
+        "Get",
+        "Post"
+      ],
+      "AddHeadersToRequest": {},
+      "AddClaimsToRequest": {},
+      "RouteClaimsRequirement": {},
+      "AddQueriesToRequest": {},
+      "RequestIdKey": "",
+      "FileCacheOptions": {
+        "TtlSeconds": 0,
+        "Region": ""
+      },
+      "ReRouteIsCaseSensitive": false, //路径+查询字符串统统转发到下游路由，默认的ReRouting的配置是不区分大小写的，开启则意味着Ocelot将尝试将传入的上游URL与上游模板匹配时，区分大小写
+      "ServiceName": "",
+      "QoSOptions": { //Qos相关配置
+        "ExceptionsAllowedBeforeBreaking": 0,
+        "DurationOfBreak": 0,
+        "TimeoutValue": 0
+      },
+      "LoadBalancer": "", //负载均衡相关选项
+      "RateLimitOptions": { //限流相关配置
+        "ClientWhitelist": [],
+        "EnableRateLimiting": false,
+        "Period": "",
+        "PeriodTimespan": 0,
+        "Limit": 0
+      },
+      "AuthenticationOptions": { //认证相关选项
+        "AuthenticationProviderKey": "",
+        "AllowedScopes": []
+      },
+      "HttpHandlerOptions": { //HttpHandler相关的配置
+        "AllowAutoRedirect": true, //是否对下游重定向进行响应。请求是否应遵循重定向响应。如果请求应自动遵循来自下游资源的重定向响应，则将其设置为true; 否则是假的。默认值为false。
+        "UseCookieContainer": true, //是否启动CookieContainer储存cookies。处理程序是否使用CookieContainer属性存储服务器cookie并在发送请求时使用这些cookie。默认值为false。请注意，如果您使CookieContainer，则Ocelot会为每个下游服务缓存HttpClient。这意味着对该DownstreamService的所有请求将共享相同的cookie
+        "UseTracing": true
+      },
+      "DangerousAcceptAnyServerCertificateValidator": false //忽略SSL 警告/错误,最好的方式是创建本地以及远程所信任的证书
+    }
+
+}
