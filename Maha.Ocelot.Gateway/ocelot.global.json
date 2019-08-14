@@ -3,7 +3,7 @@
     "ServiceDiscoveryProvider": {
       "Host": "localhost",
       "Port": 8500,
-      "ConfigurationKey": "Oceolot_A"
+      "Type": "Consul"
     }
   }
 }

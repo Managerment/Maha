@@ -23,6 +23,7 @@
     <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="2.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.1.3" />
     <PackageReference Include="Ocelot" Version="12.0.1" />
+    <PackageReference Include="Ocelot.Provider.Consul" Version="0.1.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,6 +41,6 @@
     </Content>
   </ItemGroup>
 
-  <ProjectExtensions><VisualStudio><UserProperties ocelot_1all_1json__JSONSchema="http://json.schemastore.org/apple-app-site-association" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions><VisualStudio><UserProperties ocelot_1all_1json__JSONSchema="http://json.schemastore.org/apple-app-site-association" ocelot_1json__JSONSchema="http://json.schemastore.org/2.0.0-csd.2.beta.2018-10-10.json" /></VisualStudio></ProjectExtensions>
 
 </Project>

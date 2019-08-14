@@ -6,7 +6,7 @@
 <!DOCTYPE html>
 <html>
 @{
-    var ips = Dns.GetHostByName(Dns.GetHostName()).AddressList;
+    var ips = Dns.GetHostEntry(Dns.GetHostName()).AddressList;
     foreach (var ip in ips)
     {
         if (ip != null)
